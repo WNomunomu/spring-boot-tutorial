@@ -1,0 +1,20 @@
+{
+	"name": "Spring-Boot-devcontainer",
+	"image": "mcr.microsoft.com/devcontainers/java:1-21-bullseye",
+	"features": {
+		"ghcr.io/devcontainers/features/java:1": {
+			"version": "none",
+			"installMaven": "false",
+			"installGradle": "true"
+		},
+		"ghcr.io/mikaello/devcontainer-features/kotlinc:1": {}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"vmware.vscode-boot-dev-pack",
+				"fwcd.kotlin"
+			]
+		}
+	}
+}
