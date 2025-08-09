@@ -1,6 +1,6 @@
 package com.example.taskmanager.controller
 
-import com.example.taskmanager.model.Task
+import com.example.taskmanager.entity.Task
 import com.example.taskmanager.model.TaskCreateRequest
 import com.example.taskmanager.model.TaskUpdateRequest
 import com.example.taskmanager.service.TaskService
@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("api/tasks")
+@RequestMapping("/api/tasks")
 class TaskController(private val taskService: TaskService) {
 
   @GetMapping
@@ -38,7 +38,7 @@ class TaskController(private val taskService: TaskService) {
           @PathVariable id: Long,
           @RequestBody request: TaskUpdateRequest
   ): ResponseEntity<Task> {
-    val task = taskService.udpateTask(id, request)
+    val task = taskService.updateTask(id, request)
     return if (task != null) {
       ResponseEntity.ok(task)
     } else {
