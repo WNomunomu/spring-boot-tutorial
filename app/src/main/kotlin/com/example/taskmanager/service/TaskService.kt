@@ -1,50 +1,46 @@
 package com.example.taskmanager.service
 
-import com.example.taskmanager.model.Task
+import com.example.taskmanager.entity.Task
 import com.example.taskmanager.model.TaskCreateRequest
 import com.example.taskmanager.model.TaskUpdateRequest
-import java.time.LocalDateTime
-import java.util.concurrent.atomic.AtomicLong
+import com.example.taskmanager.repository.TaskRepository
 import org.springframework.stereotype.Service
 
 @Service
-class TaskService {
-
-  private val tasks = mutableMapOf<Long, Task>()
-  private val idGenerator = AtomicLong(0)
+class TaskService(private val taskRepository: TaskRepository) {
 
   fun createTask(request: TaskCreateRequest): Task {
-    val task =
-            Task(
-                    id = idGenerator.incrementAndGet(),
-                    title = request.title,
-                    description = request.description
-            )
-    tasks[task.id] = task
-
-    return task
+    val task = Task(
+      title = request.title,
+      description = request.description
+    )
+    return taskRepository.save(task)
   }
 
   fun getAllTasks(): List<Task> {
-    return tasks.values.toList()
+    return taskRepository.findAll()
   }
 
   fun getTaskById(id: Long): Task? {
-    return tasks[id]
+    return taskRepository.findById(id).orElse(null)
   }
 
-  fun udpateTask(id: Long, request: TaskUpdateRequest): Task? {
-    val task: Task = tasks[id] ?: return null
+  fun updateTask(id: Long, request: TaskUpdateRequest): Task? {
+    val task = taskRepository.findById(id).orElse(null) ?: return null
 
     request.title?.let { task.title = it }
     request.description?.let { task.description = it }
     request.completed?.let { task.completed = it }
-    task.updatedAt = LocalDateTime.now()
 
-    return task
+    return taskRepository.save(task)
   }
 
   fun deleteTask(id: Long): Boolean {
-    return tasks.remove(id) != null
+    return if (taskRepository.existsById(id)) {
+      taskRepository.deleteById(id)
+      true
+    } else {
+      false
+    }
   }
 }
