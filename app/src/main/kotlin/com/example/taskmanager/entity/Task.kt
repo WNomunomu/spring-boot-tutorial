@@ -16,5 +16,9 @@ data class Task(
   var description: String? = null,
 
   @Column(nullable = false)
-  var completed: Boolean = false
+  var completed: Boolean = false,
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id", nullable = false)
+  var user: User
 )
