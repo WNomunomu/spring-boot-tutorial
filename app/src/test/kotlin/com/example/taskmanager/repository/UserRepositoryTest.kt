@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.test.context.ActiveProfiles
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import org.junit.jupiter.api.Assertions.*
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -20,7 +18,7 @@ class UserRepositoryTest @Autowired constructor(
   fun `should save and find user by username`() {
     val user = User(username = "testuser", email = "test@example.com")
     entityManager.persist(user)
-    entityMnaager.flush()
+    entityManager.flush()
 
     val found = userRepository.findByUsername("testuser")
 
@@ -33,7 +31,7 @@ class UserRepositoryTest @Autowired constructor(
   fun `should find user by email`() {
     val user = User(username = "testuser", email = "test@example.com")
     entityManager.persist(user)
-    entityMnaager.flush()
+    entityManager.flush()
 
     val found = userRepository.findByEmail("test@example.com")
 
@@ -46,10 +44,10 @@ class UserRepositoryTest @Autowired constructor(
   fun `should check if username exists`() {
     val user = User(username = "testuser", email = "test@example.com")
     entityManager.persist(user)
-    entityMnaager.flush()
+    entityManager.flush()
 
     assertTrue(userRepository.existsByUsername("testuser"))
-    assertTrue(userRepository.existsByUsername("nonexistent"))
+    assertFalse(userRepository.existsByUsername("nonexistent"))
   }
 
   @Test
