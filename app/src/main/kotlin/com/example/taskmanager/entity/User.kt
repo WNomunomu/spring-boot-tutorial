@@ -13,6 +13,9 @@ data class User(
   @Column(unique = true, nullable = false, length = 50)
   var username: String,
 
+  @Column(unique = true, nullable = false, length = 255)
+  var email: String,
+
   @Column(name = "created_at", nullable = false)
   val createdAt: LocalDateTime = LocalDateTime.now(),
 
